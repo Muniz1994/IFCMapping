@@ -1,0 +1,21 @@
+{
+  "name": "ifcmapping-codemirror",
+  "private": true,
+  "description": "CodeMirror 6 bundle for the IFCQuery editor. Rebuild with: npm install && npm run build",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/index.mjs --bundle --format=esm --minify --outfile=dist/index.js"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.18.0",
+    "@codemirror/commands": "^6.8.0",
+    "@codemirror/language": "^6.11.0",
+    "@codemirror/lint": "^6.8.0",
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/view": "^6.36.0",
+    "@lezer/highlight": "^1.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

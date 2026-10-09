@@ -1,3 +1,5 @@
-streamlit>=1.37
+nicegui>=3.18
+anthropic>=1.12
+python-dotenv
 ifcquery @ git+https://github.com/Muniz1994/IFCQuery.git
 pytest
