@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ine
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ine.pt/public/xsd/forms upload_v1.xsd"
+	xmlns="http://ine.pt/public/xsd/forms">
+	<header chave="046B7652-F415-4EE3-BB0E-33F717F4977C">
+		<geracao>
+			<data>2026-10-07T14:50:53</data>
+			<software ver="1.0">NoPaper</software>
+		</geracao>
+		<qual>REAL</qual>
+	</header>
+	<respostas>
+		<resposta>
+			<referencia>
+				<inq>P320</inq>
+				<municipio>00195</municipio>
+				<mensal>
+					<ano>2026</ano>
+					<sub-periodo>10</sub-periodo>
+				</mensal>
+			</referencia>
+			<dados tipo="normal" ult_actualizacao="2026-10-07T07:37:32">
+				<v nome="01.m2">SUPERFÍCIE TOTAL DO TERRENO OBJETO DA OPERAÇÃO URBANÍSTICA</v>
+				<v nome="02.m2">ÁREA DA PARCELA OU LOTE</v>
+				<v nome="03.m2">ÁREA TOTAL DE IMPLANTAÇÃO</v>
+				<v nome="04.m2">ÁREA TOTAL DE IMPERMEABILIZAÇÃO</v>
+				<v nome="05.m2">ÁREA TOTAL PERMEÁVEL</v>
+				<v nome="06.m2">ÁREA TOTAL DE CONSTRUÇÃO</v>
+				<v nome="07.m3">VOLUME TOTAL</v>
+				<v nome="08.m">ALTURA DA EDIFICAÇÃO</v>
+				<v nome="38">ALTURA DA FACHADA</v>
+				<v nome="11">N.º DE PISOS ACIMA DA COTA DE SOLEIRA</v>
+				<v nome="12">N.º DE PISOS ABAIXO DA COTA DE SOLEIRA</v>
+				<v nome="39">USO A QUE SE DESTINA A EDIFICAÇÃO / USO DA EDIFICAÇÃO</v>
+				<v nome="13">N.º TOTAL DE FOGOS</v>
+				<v nome="14">N.º DE FOGOS POR TIPOLOGIA (opcional)</v>
+				<v nome="15">N.º DE FOGOS PARA HABITAÇÃO PÚBLICA, DE CUSTOS CONTROLADOS OU PARA ARRENDAMENTO ACESSÍVEL</v>
+				<v nome="16">N.º DE FRAÇÕES AFETAS A COMÉRCIO/SERVIÇOS/INDÚSTRIA</v>
+				<v nome="17.m2">ÁREA DE CONSTRUÇÃO PARA HABITAÇÃO</v>
+				<v nome="18.m2">ÁREA DE CONSTRUÇÃO PARA COMÉRCIO</v>
+				<v nome="19.m2">N.º DE FRAÇÕES AFETAS A SERVIÇOS</v>
+				<v nome="20.m2">N.º DE FRAÇÕES AFETAS A SERVIÇOS</v>
+				<v nome="21.m2">ÁREA DE CONSTRUÇÃO PARA EQUIPAMENTOS</v>
+				<v nome="22.m2">ÁREA DE CONSTRUÇÃO PARA ESTACIONAMENTO</v>
+				<v nome="23.m2">ÁREA DE CONSTRUÇÃO PARA ARRECADAÇÕES</v>
+				<v nome="24.m2">ÁREA DE CONSTRUÇÃO PARA LOGÍSTICA E ARMAZÉNS</v>
+				<v nome="25.m2">ÁREA DE CONSTRUÇÃO PARA ÁREAS TÉCNICAS</v>
+				<v nome="26.m2">ÁREA DE CONSTRUÇÃO PARA (especificar)</v>
+				<v nome="27.m2">ÁREA TOTAL DE CEDÊNCIA PARA O DOMÍNIO PÚBLICO MUNICIPAL</v>
+				<v nome="28.m2">ÁREA TOTAL DE CEDÊNCIA PARA O DOMÍNIO PRIVADO MUNICIPAL</v>
+				<v nome="30.m2">ÁREA TOTAL DE CEDÊNCIA PARA EQUIPAMENTO DE UTILIZAÇÃO COLETIVA / HABITAÇÃO PÚBLICA, DE CUSTOS CONTROLADOS OU PARA ARRENDAMENTO ACESSÍVEL</v>
+				<v nome="31">N.º TOTAL DE LUGARES DE ESTACIONAMENTO</v>
+				<v nome="32">N.º DE LUGARES DE ESTACIONAMENTO PÚBLICO</v>
+				<v nome="33">ÍNDICE DE IMPLANTAÇÃO</v>
+				<v nome="34">ÍNDICE DE IMPERMEABILIZAÇÃO DO SOLO</v>
+				<v nome="35">ÍNDICE DE OCUPAÇÃO DO SOLO</v>
+				<v nome="36">ÍNDICE DE UTILIZAÇÃO DO SOLO</v>
+				<v nome="37">DENSIDADE HABITACIONAL</v>
+				<v nome="40.m2">SUPERFÍCIE TOTAL DO TERRENO OBJETO DA OPERAÇÃO URBANÍSTICA demolição</v>
+				<v nome="41.m2">ÁREA DA PARCELA OU LOTE demolição</v>
+				<v nome="42.m2">ÁREA TOTAL DE IMPLANTAÇÃO demolição</v>
+				<v nome="43.m3">VOLUME TOTAL demolição</v>
+				<v nome="44.m">EDIFICAÇÃO demolição</v>
+				<v nome="45.m">ALTURA DA FACHADA demolição</v>
+				<v nome="46">N.º DE PISOS ACIMA DA COTA DE SOLEIRA demolição</v>
+				<v nome="47">N.º DE PISOS ABAIXO DA COTA DE SOLEIRA demolição</v>
+				<v nome="48">EDIFICAÇÃO demolição</v>
+			</dados>
+			<info>
+				<i nome="form_id">ANEXO-IC</i>
+			</info>
+		</resposta>
+	</respostas>
+</ine>

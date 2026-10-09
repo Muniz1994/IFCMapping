@@ -1,0 +1,3 @@
+streamlit>=1.37
+ifcquery @ git+https://github.com/Muniz1994/IFCQuery.git
+pytest
