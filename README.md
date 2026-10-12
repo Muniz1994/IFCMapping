@@ -25,9 +25,12 @@ The assistant panel needs an Anthropic API key. Put it in a `.env` file in the p
 
 ```ini
 ANTHROPIC_API_KEY=sk-ant-...
+ANTHROPIC_WORKSPACE_ID=wrkspc_...    # only if the key is not scoped to a workspace
 IFCMAPPING_MODEL=claude-opus-5-5     # or claude-sonnet-5-5 (cheaper)
 IFCMAPPING_EFFORT=medium             # low, medium or high
 ```
+
+If the assistant reports *"This API key is not scoped to a workspace"*, set `ANTHROPIC_WORKSPACE_ID` (Claude Console → Settings → Workspaces), or use an API key created inside a workspace.
 
 Restart the app after editing `.env`. `.env` is not committed to git.
 

@@ -37,32 +37,62 @@ const language = CM.StreamLanguage.define({
   languageData: { commentTokens: { line: "//" } },
 });
 
+// Dark palette matching theme.py (nicegui.io colours).
+const C = {
+  panel: "#1e222c", surface: "#181b23", text: "#edeff3", dim: "#9ba2ae", muted: "#6b737e",
+  border: "rgba(255,255,255,0.08)", blue: "#5898d4", blueLight: "#7ab4e4", accent: "#f0a050",
+};
+const MONO = "'Fira Mono', ui-monospace, Consolas, monospace";
+
 const highlight = CM.HighlightStyle.define([
-  { tag: CM.tags.typeName, color: "#1f7fc4" },
-  { tag: CM.tags.keyword, color: "#9a4fc4" },
-  { tag: CM.tags.function(CM.tags.variableName), color: "#c96a10" },
-  { tag: CM.tags.string, color: "#2f8a3e" },
-  { tag: CM.tags.number, color: "#c23f66" },
-  { tag: CM.tags.atom, color: "#a8800c" },
-  { tag: CM.tags.namespace, color: "#0f8f8f" },
-  { tag: CM.tags.propertyName, color: "#2f7a7a" },
-  { tag: CM.tags.operator, color: "#d2504a" },
-  { tag: CM.tags.comment, color: "#8a8f98", fontStyle: "italic" },
+  { tag: CM.tags.typeName, color: C.blueLight, fontWeight: "500" },
+  { tag: CM.tags.keyword, color: "#c792ea" },
+  { tag: CM.tags.function(CM.tags.variableName), color: C.accent },
+  { tag: CM.tags.string, color: "#a6d189" },
+  { tag: CM.tags.number, color: "#f78c6c" },
+  { tag: CM.tags.atom, color: "#e5c07b" },
+  { tag: CM.tags.namespace, color: "#5fcfcf" },
+  { tag: CM.tags.propertyName, color: "#89ddff" },
+  { tag: CM.tags.operator, color: "#f07178" },
+  { tag: CM.tags.variableName, color: C.text },
+  { tag: CM.tags.comment, color: C.muted, fontStyle: "italic" },
 ]);
 
 const theme = CM.EditorView.theme({
-  "&": { fontSize: "14px", border: "1px solid #d0d4da", borderRadius: "6px", background: "#fbfcfd" },
-  "&.cm-focused": { outline: "none", borderColor: "#1976d2" },
-  ".cm-content": {
-    fontFamily: "ui-monospace, 'Cascadia Code', Consolas, monospace",
-    fontVariantLigatures: "none",  // show "->" as typed, not as an arrow
-    padding: "6px 0",
-    minHeight: "2.6em",
+  "&": {
+    fontSize: "14px", color: C.text, background: C.panel,
+    border: `1px solid ${C.border}`, borderRadius: "8px",
+    transition: "border-color 0.15s, box-shadow 0.15s",
   },
-  ".cm-line": { padding: "0 8px" },
-  ".cm-tooltip.cm-tooltip-autocomplete > ul": { fontFamily: "ui-monospace, 'Cascadia Code', Consolas, monospace" },
-  ".cm-completionDetail": { marginLeft: "1em", color: "#8a8f98", fontStyle: "normal" },
-});
+  "&.cm-focused": { outline: "none", borderColor: C.blue, boxShadow: `0 0 0 3px rgba(88,152,212,0.18)` },
+  ".cm-content": {
+    fontFamily: MONO,
+    fontVariantLigatures: "none",  // show "->" as typed, not as an arrow
+    padding: "8px 0",
+    minHeight: "2.6em",
+    caretColor: C.blueLight,
+  },
+  ".cm-line": { padding: "0 10px" },
+  ".cm-cursor, .cm-dropCursor": { borderLeftColor: C.blueLight },
+  "&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-selectionBackground, ::selection":
+    { background: "rgba(88,152,212,0.30)" },
+  ".cm-placeholder": { color: C.muted },
+  ".cm-matchingBracket, &.cm-focused .cm-matchingBracket": { background: "rgba(240,160,80,0.18)", outline: "none" },
+  ".cm-tooltip": {
+    background: C.surface, color: C.text, border: `1px solid ${C.border}`, borderRadius: "8px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.45)", overflow: "hidden",
+  },
+  ".cm-tooltip.cm-tooltip-autocomplete > ul": { fontFamily: MONO, maxHeight: "18em" },
+  ".cm-tooltip-autocomplete ul li[aria-selected]": { background: "rgba(88,152,212,0.25)", color: C.text },
+  ".cm-completionIcon": { color: C.dim, opacity: "0.9" },
+  ".cm-completionMatchedText": { textDecoration: "none", color: C.accent },
+  ".cm-completionDetail": { marginLeft: "1em", color: C.muted, fontStyle: "normal" },
+  ".cm-completionInfo": { background: C.surface, color: C.dim },
+  ".cm-diagnostic": { padding: "6px 10px", fontFamily: "Inter, system-ui, sans-serif", fontSize: "13px" },
+  ".cm-diagnostic-error": { borderLeftColor: "#ef6b73" },
+  ".cm-diagnostic-warning": { borderLeftColor: C.accent },
+  ".cm-diagnostic-info": { borderLeftColor: C.blue },
+}, { dark: true });
 
 // Words the completion list keeps filtering locally while the user types.
 // A "." or "(" ends the word, so the next request asks for what follows it.
@@ -147,7 +177,7 @@ export default {
         language,
         CM.syntaxHighlighting(highlight),
         theme,
-        CM.autocompletion({ override: [completionSource], icons: true, activateOnTypingDelay: 60 }),
+        CM.autocompletion({ override: [completionSource], icons: false, activateOnTypingDelay: 60 }),
         CM.linter(lintSource, { delay: 250 }),
         this.readonlyCompartment.of(CM.EditorState.readOnly.of(!!this.readonly)),
         CM.keymap.of([

@@ -128,8 +128,11 @@ class Assistant:
     async def send(self, text: str, on_text: TextHandler, on_tool: ToolHandler) -> None:
         """Send a user message and run tool calls until Claude answers."""
         if self._client is None:
+            # An organisation-level API key (not scoped to a workspace) must name the workspace per request.
+            workspace = os.environ.get("ANTHROPIC_WORKSPACE_ID", "").strip()
             try:
-                client = anthropic.AsyncAnthropic()
+                client = anthropic.AsyncAnthropic(
+                    default_headers={"anthropic-workspace-id": workspace} if workspace else None)
             except anthropic.AnthropicError:
                 raise AssistantError(NO_CREDENTIALS) from None
             # API key, auth token, or an `ant auth login` profile (held in the client's token cache).

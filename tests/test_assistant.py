@@ -153,6 +153,27 @@ def test_tool_loop(ws, source):
     assert third["messages"][-1]["role"] == "system" and "IfcSpace 2" in third["messages"][-1]["content"]
 
 
+def test_workspace_header(ws, monkeypatch):
+    import anthropic
+
+    created = {}
+
+    def fake_client(**kwargs):
+        created.update(kwargs)
+        client = FakeClient([message(NS(type="text", text="ok"))])
+        client.api_key = "key"
+        return client
+
+    monkeypatch.setattr(anthropic, "AsyncAnthropic", fake_client)
+    monkeypatch.setenv("ANTHROPIC_WORKSPACE_ID", "wrkspc_123")
+    asyncio.run(Assistant(ws).send("hi", lambda t: None, lambda *a: None))
+    assert created["default_headers"] == {"anthropic-workspace-id": "wrkspc_123"}
+
+    monkeypatch.delenv("ANTHROPIC_WORKSPACE_ID")
+    asyncio.run(Assistant(ws).send("hi", lambda t: None, lambda *a: None))
+    assert created["default_headers"] is None
+
+
 def test_failed_turn_is_dropped(ws):
     import anthropic
     import httpx2

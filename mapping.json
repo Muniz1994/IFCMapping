@@ -1,0 +1,322 @@
+{
+  "version": 1,
+  "form": "ine_xml",
+  "extractor": "ifcquery",
+  "parameters": [
+    {
+      "id": "01.m2",
+      "label": "SUPERFÍCIE TOTAL DO TERRENO OBJETO DA OPERAÇÃO URBANÍSTICA",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "02.m2",
+      "label": "ÁREA DA PARCELA OU LOTE",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "03.m2",
+      "label": "ÁREA TOTAL DE IMPLANTAÇÃO",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"IMPLANTACAO\"]-> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "04.m2",
+      "label": "ÁREA TOTAL DE IMPERMEABILIZAÇÃO",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"AREAIMPERMEAVEL\"]-> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "05.m2",
+      "label": "ÁREA TOTAL PERMEÁVEL",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"AREAPERMEAVEL\"]-> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "06.m2",
+      "label": "ÁREA TOTAL DE CONSTRUÇÃO",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "07.m3",
+      "label": "VOLUME TOTAL",
+      "unit": "m3",
+      "query": "FIRST(IfcSpace[PredefinedType=\"VOLUMEEDIFICADO\"] -> Qto_SpaceBaseQuantities.GrossVolume)",
+      "notes": ""
+    },
+    {
+      "id": "08.m",
+      "label": "ALTURA DA EDIFICAÇÃO",
+      "unit": "m",
+      "query": "FIRST(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] -> PTMU_Licenciamento.AlturaEdificacao)",
+      "notes": ""
+    },
+    {
+      "id": "38",
+      "label": "ALTURA DA FACHADA",
+      "unit": null,
+      "query": "FIRST(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] -> PTMU_Licenciamento.AlturaFachada)",
+      "notes": ""
+    },
+    {
+      "id": "11",
+      "label": "N.º DE PISOS ACIMA DA COTA DE SOLEIRA",
+      "unit": null,
+      "query": "COUNT(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] > IfcBuildingStorey[Elevation >= 0])",
+      "notes": ""
+    },
+    {
+      "id": "12",
+      "label": "N.º DE PISOS ABAIXO DA COTA DE SOLEIRA",
+      "unit": null,
+      "query": "COUNT(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] > IfcBuildingStorey[Elevation < 0])",
+      "notes": ""
+    },
+    {
+      "id": "39",
+      "label": "USO A QUE SE DESTINA A EDIFICAÇÃO / USO DA EDIFICAÇÃO",
+      "unit": null,
+      "query": "FIRST(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] -> Pset_BuildingCommon.OccupancyType)",
+      "notes": ""
+    },
+    {
+      "id": "13",
+      "label": "N.º TOTAL DE FOGOS",
+      "unit": null,
+      "query": "COUNT(IfcSpace[PredefinedType = \"FRACAO\" and PTMU_Licenciamento.Uso = \"HABITACAO\"])",
+      "notes": ""
+    },
+    {
+      "id": "14",
+      "label": "N.º DE FOGOS POR TIPOLOGIA (opcional)",
+      "unit": null,
+      "query": "FIRST(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] -> PTMU_Licenciamento.FogosPorTipologia)",
+      "notes": ""
+    },
+    {
+      "id": "15",
+      "label": "N.º DE FOGOS PARA HABITAÇÃO PÚBLICA, DE CUSTOS CONTROLADOS OU PARA ARRENDAMENTO ACESSÍVEL",
+      "unit": null,
+      "query": "COUNT(IfcSpace[PredefinedType = \"FRACAO\" and PTMU_Licenciamento.Uso = \"HABITACAO\" and PTMU_Licenciamento.RegimeHabitacao in (\"PUBLICA\", \"CUSTOS_CONTROLADOS\", \"ARRENDAMENTO_ACESSIVEL\")])",
+      "notes": ""
+    },
+    {
+      "id": "16",
+      "label": "N.º DE FRAÇÕES AFETAS A COMÉRCIO/SERVIÇOS/INDÚSTRIA",
+      "unit": null,
+      "query": "COUNT(IfcSpace[PredefinedType = \"FRACAO\" and PTMU_Licenciamento.Uso in (\"COMERCIO\", \"SERVICOS\", \"INDUSTRIA\")])",
+      "notes": ""
+    },
+    {
+      "id": "17.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA HABITAÇÃO",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"HABITACAO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "18.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA COMÉRCIO",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"COMERCIO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "19.m2",
+      "label": "N.º DE FRAÇÕES AFETAS A SERVIÇOS",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"SERVICOS\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "20.m2",
+      "label": "N.º DE FRAÇÕES AFETAS A SERVIÇOS",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"INDUSTRIA\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "21.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA EQUIPAMENTOS",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"EQUIPAMENTOS\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "22.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA ESTACIONAMENTO",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"ESTACIONAMENTO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "23.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA ARRECADAÇÕES",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"ARRECADACOES\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "24.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA LOGÍSTICA E ARMAZÉNS",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"LOGISTICA\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "25.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA ÁREAS TÉCNICAS",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"AREASTECNICAS\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "26.m2",
+      "label": "ÁREA DE CONSTRUÇÃO PARA (especificar)",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = GFA and PTMU_Licenciamento.Uso = \"OUTRO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "27.m2",
+      "label": "ÁREA TOTAL DE CEDÊNCIA PARA O DOMÍNIO PÚBLICO MUNICIPAL",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = \"CEDENCIAPUBLICO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "28.m2",
+      "label": "ÁREA TOTAL DE CEDÊNCIA PARA O DOMÍNIO PRIVADO MUNICIPAL",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = \"CEDENCIAPRIVADO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "30.m2",
+      "label": "ÁREA TOTAL DE CEDÊNCIA PARA EQUIPAMENTO DE UTILIZAÇÃO COLETIVA / HABITAÇÃO PÚBLICA, DE CUSTOS CONTROLADOS OU PARA ARRENDAMENTO ACESSÍVEL",
+      "unit": "m2",
+      "query": "SUM(IfcSpace[PredefinedType = \"CEDENCIAEQUIPAMENTO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "31",
+      "label": "N.º TOTAL DE LUGARES DE ESTACIONAMENTO",
+      "unit": null,
+      "query": "COUNT(IfcSpace[PredefinedType = PARKING])",
+      "notes": ""
+    },
+    {
+      "id": "32",
+      "label": "N.º DE LUGARES DE ESTACIONAMENTO PÚBLICO",
+      "unit": null,
+      "query": "COUNT(IfcSpace[PredefinedType = PARKING and PTMU_Licenciamento.Publico = true])",
+      "notes": ""
+    },
+    {
+      "id": "33",
+      "label": "ÍNDICE DE IMPLANTAÇÃO",
+      "unit": null,
+      "query": "FIRST(IfcSpace[PredefinedType = \"IMPLANTACAO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea) / FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "34",
+      "label": "ÍNDICE DE IMPERMEABILIZAÇÃO DO SOLO",
+      "unit": null,
+      "query": "let aimp = FIRST(IfcSpace[PredefinedType = \"AREAIMPERMEAVEL\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)\nlet as = FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)\naimp / as",
+      "notes": ""
+    },
+    {
+      "id": "35",
+      "label": "ÍNDICE DE OCUPAÇÃO DO SOLO",
+      "unit": null,
+      "query": "let ai = FIRST(IfcSpace[PredefinedType = \"IMPLANTACAO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)\nlet as = FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)\nai / as",
+      "notes": ""
+    },
+    {
+      "id": "36",
+      "label": "ÍNDICE DE UTILIZAÇÃO DO SOLO",
+      "unit": null,
+      "query": "let ac = SUM(IfcSpace[PredefinedType = GFA] -> Qto_SpaceBaseQuantities.GrossFloorArea)\nlet as = FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)\nac / as",
+      "notes": ""
+    },
+    {
+      "id": "37",
+      "label": "DENSIDADE HABITACIONAL",
+      "unit": null,
+      "query": "let fogos = COUNT(IfcSpace[PredefinedType = \"FRACAO\" and PTMU_Licenciamento.Uso = \"HABITACAO\"])\nlet as = FIRST(IfcSpace[PredefinedType = \"AREALOTE\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)\nfogos / (as / 10000)",
+      "notes": ""
+    },
+    {
+      "id": "40.m2",
+      "label": "SUPERFÍCIE TOTAL DO TERRENO OBJETO DA OPERAÇÃO URBANÍSTICA demolição",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"AREALOTE_DEMOLICAO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "41.m2",
+      "label": "ÁREA DA PARCELA OU LOTE demolição",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"AREALOTE_DEMOLICAO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "42.m2",
+      "label": "ÁREA TOTAL DE IMPLANTAÇÃO demolição",
+      "unit": "m2",
+      "query": "FIRST(IfcSpace[PredefinedType = \"IMPLANTACAO_DEMOLICAO\"] -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+      "notes": ""
+    },
+    {
+      "id": "43.m3",
+      "label": "VOLUME TOTAL demolição",
+      "unit": "m3",
+      "query": "FIRST(IfcSpace[PredefinedType = \"VOLUMEEDIFICADO_DEMOLICAO\"] -> Qto_SpaceBaseQuantities.GrossVolume)",
+      "notes": ""
+    },
+    {
+      "id": "44.m",
+      "label": "EDIFICAÇÃO demolição",
+      "unit": "m",
+      "query": "FIRST(IfcBuilding[PTMU_Licenciamento.Demolicao = true] -> PTMU_Licenciamento.AlturaEdificacao)",
+      "notes": ""
+    },
+    {
+      "id": "45.m",
+      "label": "ALTURA DA FACHADA demolição",
+      "unit": "m",
+      "query": "FIRST(IfcBuilding[PTMU_Licenciamento.Demolicao = true] -> PTMU_Licenciamento.AlturaFachada)",
+      "notes": ""
+    },
+    {
+      "id": "46",
+      "label": "N.º DE PISOS ACIMA DA COTA DE SOLEIRA demolição",
+      "unit": null,
+      "query": "COUNT(IfcBuilding[PTMU_Licenciamento.Demolicao = true] > IfcBuildingStorey[Elevation >= 0])",
+      "notes": ""
+    },
+    {
+      "id": "47",
+      "label": "N.º DE PISOS ABAIXO DA COTA DE SOLEIRA demolição",
+      "unit": null,
+      "query": "COUNT(IfcBuilding[PTMU_Licenciamento.Demolicao = true] > IfcBuildingStorey[Elevation < 0])",
+      "notes": ""
+    },
+    {
+      "id": "48",
+      "label": "EDIFICAÇÃO demolição",
+      "unit": null,
+      "query": "FIRST(IfcBuilding[PTMU_Licenciamento.Demolicao = true] -> Pset_BuildingCommon.OccupancyType)",
+      "notes": ""
+    }
+  ]
+}

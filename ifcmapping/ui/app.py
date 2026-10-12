@@ -14,6 +14,7 @@ from ..extractors.ifcq import engine as ifcq_engine
 from ..forms import get_form
 from ..mapping import MappingSet, Parameter
 from .chat import ChatPanel
+from . import theme
 from .param_card import ParamCard
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -69,13 +70,15 @@ class MappingPage:
     # ---- header -------------------------------------------------------------------------------
 
     def _header(self) -> None:
-        with ui.header(elevated=False).classes("items-center gap-3 bg-white text-dark q-px-md q-py-xs border-b"):
-            ui.label("IFCMapping").classes("text-h6 text-weight-bold text-primary")
-            self.template_label = ui.label().classes("text-caption text-grey-8")
+        with ui.header(elevated=False).classes("ifcm-header items-center gap-3 q-px-lg q-py-sm"):
+            with ui.row().classes("items-center gap-2 no-wrap"):
+                ui.icon("view_in_ar", size="sm").style(f"color: {theme.BLUE_LIGHT}")
+                ui.label("IFCMapping").classes("ifcm-brand text-h6")
+            self.template_label = ui.label().classes("text-caption ifcm-dim")
             self._update_template_label()
             ui.space()
             self.model_chip = ui.chip("No model", icon="view_in_ar", on_click=self.load_model_dialog) \
-                .props("outline clickable color=grey-8").tooltip("Load an IFC model")
+                .props("outline clickable color=grey-6").tooltip("Load an IFC model")
             self.schema_select = ui.select(list(SCHEMAS), value=self.extractor.schema,
                                            on_change=lambda e: self.set_schema(e.value)) \
                 .props("dense outlined options-dense").classes("w-40").tooltip("IFC schema for checking and IDS")
@@ -107,7 +110,7 @@ class MappingPage:
             self.status_filter = ui.toggle({"all": "All", "empty": "Empty", "problems": "Problems"}, value="all",
                                            on_change=self.apply_filter).props("dense no-caps unelevated")
             ui.space()
-            self.progress = ui.label().classes("text-caption text-grey-8")
+            self.progress = ui.label().classes("text-caption ifcm-dim")
             ui.button("Add parameter", icon="add", on_click=self.add_parameter).props("flat dense no-caps")
         self.card_list = ui.column().classes("w-full gap-2")
         self.build_cards()
@@ -223,7 +226,7 @@ class MappingPage:
             chat_box.buttons.clear()
             with chat_box.buttons:
                 ui.label("Accepted" if accepted else "Rejected") \
-                    .classes("text-caption " + ("text-positive" if accepted else "text-grey"))
+                    .classes("text-caption " + ("text-positive" if accepted else "ifcm-muted"))
         if proposal in self.workspace.proposals:
             self.workspace.proposals.remove(proposal)
 
@@ -233,7 +236,7 @@ class MappingPage:
         with ui.dialog() as dialog, ui.card().classes("w-96"):
             ui.label("Load an IFC model").classes("text-h6")
             ui.label("It stays on this computer. The assistant only gets a short summary of it.") \
-                .classes("text-caption text-grey-8")
+                .classes("text-caption ifcm-dim")
 
             async def handle(e: events.UploadEventArguments) -> None:
                 dialog.close()
@@ -354,7 +357,7 @@ class MappingPage:
                       on_change=lambda e: setattr(self, "decimals", int(e.value or 0))) \
                 .props("dense outlined").classes("w-36")
             ui.space()
-            self.results_summary = ui.label().classes("text-caption text-grey-8")
+            self.results_summary = ui.label().classes("text-caption ifcm-dim")
         columns = [
             {"name": "status", "label": "", "field": "status", "align": "center"},
             {"name": "id", "label": "Code", "field": "id", "align": "left"},
@@ -404,7 +407,7 @@ class MappingPage:
 
     def _ids_tab(self) -> None:
         ui.label("Every attribute and property the queries read becomes an IDS requirement.") \
-            .classes("text-caption text-grey-8")
+            .classes("text-caption ifcm-dim")
         self.ids_title = ui.input("IDS title", value="INE - Edificação e Demolição").props("dense outlined") \
             .classes("w-full")
         self.ids_types = ui.textarea("Property data types (optional, one per line)",
@@ -451,7 +454,7 @@ def main(reload: bool = False, port: int = 8080, native: bool = False) -> None:
     @ui.page("/")
     def index() -> None:
         ui.page_title("IFCMapping")
-        ui.query("body").classes("bg-grey-1")
+        theme.apply()
         MappingPage()
 
     ui.run(title="IFCMapping", reload=reload, port=port, native=native, favicon="🏗️", show=False)

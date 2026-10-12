@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from .app import MappingPage
 
 STATUS_ICONS = {
-    "empty": ("radio_button_unchecked", "text-grey-5", "No query yet"),
+    "empty": ("radio_button_unchecked", "ifcm-muted", "No query yet"),
     "ok": ("check_circle", "text-positive", "Valid"),
     "info": ("check_circle", "text-positive", "Valid"),
     "warning": ("warning", "text-warning", "Has warnings"),
@@ -28,7 +28,7 @@ class ParamCard:
         self.param = param
         self.status = "empty"
         self._evaluation = 0
-        with ui.card().classes("w-full q-pa-sm gap-1").props("flat bordered") as self.card:
+        with ui.card().classes("ifcm-card w-full q-px-md q-py-sm gap-1").props("flat") as self.card:
             with ui.row().classes("w-full items-center no-wrap gap-2"):
                 with ui.icon("radio_button_unchecked", size="xs") as self.icon:
                     self.icon_tip = ui.tooltip("")
@@ -42,7 +42,7 @@ class ParamCard:
                         ui.menu_item("Ask the assistant", lambda: page.chat.ask_about(param))
                         ui.menu_item("Edit details…", lambda: page.edit_parameter(param))
                         ui.menu_item("Delete parameter…", lambda: page.delete_parameter(param))
-            self.notes = ui.label(param.notes).classes("text-caption text-grey-7")
+            self.notes = ui.label(param.notes).classes("text-caption ifcm-dim")
             self.notes.set_visibility(bool(param.notes))
             self.editor = QueryEditor(
                 param.query,
@@ -124,14 +124,14 @@ class ParamCard:
             self.value.classes(replace="text-mono text-weight-medium text-negative")
         else:
             self.value.set_text("no value" if query.strip() else "")
-            self.value.classes(replace="text-mono text-weight-medium text-grey")
+            self.value.classes(replace="text-mono text-weight-medium ifcm-muted")
         self.value_tip.set_text(row.message or query.strip()[:200])
 
     # ---- assistant proposals --------------------------------------------------------------
 
     def show_proposal(self, proposal: Proposal) -> ui.element:
         with self.proposals:
-            with ui.card().classes("w-full q-pa-sm bg-blue-1").props("flat") as box:
+            with ui.card().classes("ifcm-proposal w-full q-pa-sm").props("flat") as box:
                 with ui.row().classes("items-center gap-2"):
                     ui.icon("auto_awesome", size="xs").classes("text-primary")
                     ui.label("Assistant proposes").classes("text-caption text-weight-medium")

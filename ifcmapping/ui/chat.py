@@ -49,7 +49,7 @@ class ChatPanel:
                 ui.label("Assistant").classes("text-subtitle1 text-weight-medium grow")
                 ui.button(icon="restart_alt", on_click=self.new_chat).props("flat round dense") \
                     .tooltip("New conversation")
-            self.scroll = ui.scroll_area().classes("w-full grow border rounded-borders")
+            self.scroll = ui.scroll_area().classes("w-full grow").style("border: 1px solid var(--ifcm-border); border-radius: 12px")
             with self.scroll:
                 self.messages = ui.column().classes("w-full gap-1")
             with self.messages:
@@ -59,7 +59,7 @@ class ChatPanel:
                     .props("outlined dense autogrow").classes("grow")
                 self.input.on("keydown.enter", self._on_enter, js_handler="(e) => { if (!e.shiftKey) { e.preventDefault(); emit(e); } }")
                 self.send_button = ui.button(icon="send", on_click=self.send).props("round unelevated dense")
-            self.usage = ui.label(f"{self.assistant.model} · {self.assistant.usage}").classes("text-caption text-grey-7")
+            self.usage = ui.label(f"{self.assistant.model} · {self.assistant.usage}").classes("text-caption ifcm-muted")
 
     def _intro(self) -> None:
         ui.markdown(
@@ -67,7 +67,7 @@ class ChatPanel:
             "- *Which parameters can the model fill?*\n"
             "- *Write the query for 06.m2*\n"
             "- *Why does 03.m2 return no value?*"
-        ).classes("text-caption text-grey-8 q-pa-sm")
+        ).classes("text-caption ifcm-dim q-pa-sm")
 
     def new_chat(self) -> None:
         if self.busy:
@@ -94,8 +94,8 @@ class ChatPanel:
         self.input.set_value("")
         self.send_button.props("loading")
         with self.messages:
-            ui.chat_message(text, sent=True).classes("w-full").props("bg-color=blue-1")
-            with ui.chat_message(name="Assistant").classes("w-full").props("bg-color=grey-2") as reply:
+            ui.chat_message(text, sent=True).classes("w-full").props("bg-color=primary text-color=white")
+            with ui.chat_message(name="Assistant").classes("w-full").props("bg-color=panel text-color=ink") as reply:
                 self.reply_column = ui.column().classes("w-full gap-1")
             with self.reply_column:
                 spinner = ui.spinner("dots", size="sm")
@@ -132,7 +132,7 @@ class ChatPanel:
         if name == "propose_query" and not is_error:
             return  # the proposal card is the record
         with self.reply_column:
-            with ui.row().classes("items-center gap-1 text-caption text-grey-7"):
+            with ui.row().classes("items-center gap-1 text-caption ifcm-muted"):
                 ui.icon("error_outline" if is_error else "build", size="xs")
                 ui.label(f"{TOOL_LABELS.get(name, name)}: {_short_args(args)}".rstrip(": "))
                 if is_error:
@@ -140,7 +140,7 @@ class ChatPanel:
 
     def show_proposal(self, proposal: Proposal) -> ui.element:
         with self.reply_column:
-            with ui.card().classes("w-full q-pa-sm bg-blue-1").props("flat") as box:
+            with ui.card().classes("ifcm-proposal w-full q-pa-sm").props("flat") as box:
                 with ui.row().classes("items-center gap-2"):
                     ui.badge(proposal.param_id).props("outline color=primary")
                     if proposal.preview:
