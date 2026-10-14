@@ -99,7 +99,7 @@
       "label": "N.º DE FOGOS POR TIPOLOGIA (opcional)",
       "unit": null,
       "query": "FIRST(IfcBuilding[not (PTMU_Licenciamento.Demolicao = true)] -> PTMU_Licenciamento.FogosPorTipologia)",
-      "notes": ""
+      "notes": "Change."
     },
     {
       "id": "15",

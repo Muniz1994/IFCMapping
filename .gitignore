@@ -181,4 +181,5 @@ cython_debug/
 .cursorindexingignore
 # CodeMirror bundle sources (dist/ is committed; rebuild with npm install && npm run build)
 ifcmapping/ui/editor/node_modules/
+!ifcmapping/ui/editor/dist/
 .nicegui/

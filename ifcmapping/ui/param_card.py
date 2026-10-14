@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from nicegui import background_tasks, run, ui
+from nicegui import background_tasks, events, run, ui
 
 from ..assistant import Proposal
 from ..extractors import Diagnostic
@@ -36,14 +36,14 @@ class ParamCard:
                 self.title = ui.label(param.title).classes("text-body2 grow").style("min-width: 0")
                 with ui.label().classes("text-mono text-weight-medium") as self.value:
                     self.value_tip = ui.tooltip("")
+                self.notes_button = ui.button(icon="sticky_note_2", on_click=self.toggle_notes) \
+                    .props("flat round dense size=sm").tooltip("Notes")
                 with ui.button(icon="more_vert").props("flat round dense size=sm"):
                     with ui.menu():
                         ui.menu_item("Run now (Ctrl+Enter)", self.evaluate_now)
                         ui.menu_item("Ask the assistant", lambda: page.chat.ask_about(param))
                         ui.menu_item("Edit details…", lambda: page.edit_parameter(param))
                         ui.menu_item("Delete parameter…", lambda: page.delete_parameter(param))
-            self.notes = ui.label(param.notes).classes("text-caption ifcm-dim")
-            self.notes.set_visibility(bool(param.notes))
             self.editor = QueryEditor(
                 param.query,
                 placeholder="e.g. SUM(IfcSpace -> Qto_SpaceBaseQuantities.GrossFloorArea)   ·   Ctrl+Space for suggestions",
@@ -53,22 +53,45 @@ class ParamCard:
                 on_diagnostics=self._diagnosed,
                 on_run=self.evaluate_now,
             ).classes("w-full")
+            self.notes_input = ui.textarea(placeholder="Notes (also read by the assistant)", value=param.notes,
+                                           on_change=self._notes_changed) \
+                .props("dense outlined autogrow debounce=400").classes("w-full")
+            self.notes_input.set_visibility(bool(param.notes))
             self.proposals = ui.column().classes("w-full gap-1")
         self._set_status("empty" if not param.query.strip() else "ok")
+        self._update_notes_button()
 
     # ---- state ------------------------------------------------------------------------
 
     def refresh_header(self) -> None:
         self.title.set_text(self.param.title)
-        self.notes.set_text(self.param.notes)
-        self.notes.set_visibility(bool(self.param.notes))
+        self.notes_input.set_value(self.param.notes)
+        if self.param.notes:
+            self.notes_input.set_visibility(True)
+        self._update_notes_button()
+
+    def toggle_notes(self) -> None:
+        self.notes_input.set_visibility(not self.notes_input.visible)
+        if self.notes_input.visible:
+            self.notes_input.run_method("focus")
+
+    def _notes_changed(self, e: events.ValueChangeEventArguments) -> None:
+        notes = e.value or ""
+        if notes == self.param.notes:
+            return
+        self.param.notes = notes
+        self.page.mark_dirty()
+        self._update_notes_button()
+
+    def _update_notes_button(self) -> None:
+        self.notes_button.classes(replace="text-primary" if self.param.notes.strip() else "ifcm-muted")
 
     def matches(self, needle: str, status_filter: str) -> bool:
         if status_filter == "empty" and self.status != "empty":
             return False
         if status_filter == "problems" and self.status not in ("warning", "error"):
             return False
-        hay = f"{self.param.id} {self.param.label} {self.param.query}".lower()
+        hay = f"{self.param.id} {self.param.label} {self.param.query} {self.param.notes}".lower()
         return all(word in hay for word in needle.lower().split())
 
     def _set_status(self, status: str) -> None:

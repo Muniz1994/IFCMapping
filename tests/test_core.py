@@ -64,10 +64,12 @@ def test_legacy_queries_file():
 
 
 def test_merge_parameters_keeps_queries():
-    mapping = MappingSet(parameters=[Parameter("01.m2", "old", "m2", "COUNT(IfcSpace)"), Parameter("custom")])
+    mapping = MappingSet(parameters=[Parameter("01.m2", "old", "m2", "COUNT(IfcSpace)", "check the lot"),
+                                     Parameter("custom")])
     added = mapping.merge_parameters(FORM.parameters(TEMPLATE))
     assert len(added) == 44
     assert mapping["01.m2"].query == "COUNT(IfcSpace)"
+    assert mapping["01.m2"].notes == "check the lot"
     assert mapping["01.m2"].label.startswith("SUPERFÍCIE")
     assert mapping.get("custom") is not None
 
