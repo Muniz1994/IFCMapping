@@ -65,8 +65,8 @@ class ChatPanel:
         ui.markdown(
             "I can read and propose queries. Try:\n\n"
             "- *Which parameters can the model fill?*\n"
-            "- *Write the query for 06.m2*\n"
-            "- *Why does 03.m2 return no value?*"
+            "- *Write the query for AISU006*\n"
+            "- *Why does AISU003 return no value?*"
         ).classes("text-caption ifcm-dim q-pa-sm")
 
     def new_chat(self) -> None:

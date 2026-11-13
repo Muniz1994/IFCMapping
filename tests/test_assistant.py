@@ -13,9 +13,9 @@ from ifcmapping.mapping import MappingSet, Parameter
 @pytest.fixture
 def ws():
     mapping = MappingSet(parameters=[
-        Parameter("01.m2", "Superfície total", "m2", "FIRST(IfcSite -> PTMU_Licenciamento.SuperficieTotal)"),
-        Parameter("06.m2", "Área bruta", "m2"),
-        Parameter("11", "Pisos", None, "COUNT(IfcSpace[name = 1])"),
+        Parameter("AISU001", "Superfície total", "m2", "FIRST(IfcSite -> PTMU_Licenciamento.SuperficieTotal)"),
+        Parameter("AISU006", "Área bruta", "m2"),
+        Parameter("AISU010", "Pisos", None, "COUNT(IfcSpace[name = 1])"),
     ])
     return Workspace(mapping, IfcQueryExtractor("IFC4"))
 
@@ -26,15 +26,15 @@ def test_list_parameters(ws):
     text, is_error = run_tool(ws, "list_parameters", {})
     assert not is_error
     lines = text.splitlines()
-    assert lines[0] == "01.m2 | Superfície total [m2] | ok | FIRST(IfcSite -> PTMU_Licenciamento.SuperficieTotal)"
-    assert lines[1] == "06.m2 | Área bruta [m2] | empty | -"
+    assert lines[0] == "AISU001 | Superfície total [m2] | ok | FIRST(IfcSite -> PTMU_Licenciamento.SuperficieTotal)"
+    assert lines[1] == "AISU006 | Área bruta [m2] | empty | -"
     assert "| error |" in lines[2]
-    assert run_tool(ws, "list_parameters", {"only_empty": True})[0] == "06.m2 | Área bruta [m2] | empty | -"
+    assert run_tool(ws, "list_parameters", {"only_empty": True})[0] == "AISU006 | Área bruta [m2] | empty | -"
 
 
 def test_get_parameters_with_model(ws, source):
     ws.source = source
-    text, _ = run_tool(ws, "get_parameters", {"ids": ["01.m2", "nope"]})
+    text, _ = run_tool(ws, "get_parameters", {"ids": ["AISU001", "nope"]})
     assert "value: 2000" in text
     assert "nope: no such parameter" in text
 
@@ -51,13 +51,13 @@ def test_propose_query(ws, source):
     seen = []
     ws.on_proposal = seen.append
     text, is_error = run_tool(ws, "propose_query", {
-        "param_id": "06.m2", "query": "SUM(IfcSpace -> Qto_SpaceBaseQuantities.GrossFloorArea)",
+        "param_id": "AISU006", "query": "SUM(IfcSpace -> Qto_SpaceBaseQuantities.GrossFloorArea)",
         "explanation": "Sum of gross floor areas"})
     assert not is_error and "Value: 200.5" in text
-    assert seen[0].param_id == "06.m2" and seen[0].preview == "200.5"
-    assert ws.mapping["06.m2"].query == ""  # unchanged until the user accepts
+    assert seen[0].param_id == "AISU006" and seen[0].preview == "200.5"
+    assert ws.mapping["AISU006"].query == ""  # unchanged until the user accepts
 
-    text, is_error = run_tool(ws, "propose_query", {"param_id": "06.m2", "query": "SUM(IfcSpace"})
+    text, is_error = run_tool(ws, "propose_query", {"param_id": "AISU006", "query": "SUM(IfcSpace"})
     assert is_error and "errors" in text
     assert run_tool(ws, "propose_query", {"param_id": "zz", "query": "COUNT(IfcSpace)"})[1]
 
@@ -123,15 +123,15 @@ def test_tool_loop(ws, source):
     client = FakeClient([
         message(NS(type="tool_use", id="t1", name="list_parameters", input={"only_empty": True}),
                 stop_reason="tool_use"),
-        message(NS(type="text", text="06.m2 has no query.")),
+        message(NS(type="text", text="AISU006 has no query.")),
     ])
     assistant = Assistant(ws, model="claude-opus-5-5")
     assistant._client = client
     texts, tools = [], []
     asyncio.run(assistant.send("What is missing?", texts.append, lambda *a: tools.append(a)))
 
-    assert "".join(texts) == "06.m2 has no query."
-    assert tools[0][0] == "list_parameters" and "06.m2" in tools[0][2]
+    assert "".join(texts) == "AISU006 has no query."
+    assert tools[0][0] == "list_parameters" and "AISU006" in tools[0][2]
     first, second = client.requests
     assert first["system"][1]["cache_control"] == {"type": "ephemeral"}
     assert first["system"][1]["text"] == "No model is loaded yet."

@@ -8,7 +8,7 @@ only seeds it, and parameters can be added or removed afterwards.
       "form": "ine_xml",
       "extractor": "ifcquery",
       "parameters": [
-        {"id": "01.m2", "label": "SUPERFÍCIE ...", "unit": "m2", "query": "...", "notes": ""}
+        {"id": "AISU001", "label": "SUPERFÍCIE ...", "unit": "m²", "query": "...", "notes": ""}
       ]
     }
 
@@ -66,6 +66,19 @@ class MappingSet:
 
     def remove(self, param_id: str) -> None:
         self.parameters.remove(self[param_id])
+
+    def rename_ids(self, renames: dict[str, str]) -> list[str]:
+        """Rename parameters by id (old -> new). Returns the old ids that were renamed.
+
+        A parameter is left alone when its new id is already taken.
+        """
+        renamed = []
+        for param in self.parameters:
+            new = renames.get(param.id)
+            if new and self.get(new) is None:
+                renamed.append(param.id)
+                param.id = new
+        return renamed
 
     def queries(self) -> dict[str, str]:
         return {p.id: p.query for p in self.parameters}

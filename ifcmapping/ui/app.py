@@ -26,11 +26,15 @@ LEGACY_QUERIES = ROOT / "queries.json"
 def initial_mapping(template: bytes) -> tuple[MappingSet, str]:
     """mapping.json if present; else the template's parameters with queries from a legacy queries.json."""
     if MAPPING_FILE.exists():
-        return MappingSet.load(MAPPING_FILE), f"Loaded {MAPPING_FILE.name}"
+        mapping = MappingSet.load(MAPPING_FILE)
+        mapping.rename_ids(get_form(mapping.form).legacy_ids)
+        return mapping, f"Loaded {MAPPING_FILE.name}"
     form = get_form("ine_xml")
     mapping = MappingSet(form=form.key, parameters=form.parameters(template))
     if LEGACY_QUERIES.exists():
-        mapping.apply_queries(json.loads(LEGACY_QUERIES.read_text(encoding="utf-8")))
+        queries = MappingSet.from_json(LEGACY_QUERIES.read_text(encoding="utf-8"))
+        queries.rename_ids(form.legacy_ids)
+        mapping.apply_queries(queries.queries())
         return mapping, f"Imported queries from {LEGACY_QUERIES.name}; Save writes {MAPPING_FILE.name}"
     return mapping, f"New mapping from {DEFAULT_TEMPLATE.name}"
 
@@ -299,6 +303,7 @@ class MappingPage:
                 try:
                     data = json.loads(await e.file.text())
                     incoming = MappingSet.from_dict(data)
+                    incoming.rename_ids(get_form(incoming.form).legacy_ids)
                 except (ValueError, UnicodeDecodeError) as err:
                     ui.notify(f"Invalid file: {err}", type="negative")
                     return
